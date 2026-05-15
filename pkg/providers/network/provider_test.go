@@ -784,7 +784,8 @@ func TestResolveNetworkConfig_FlexCiderValidation(t *testing.T) {
 			[]string{"subnet-single-v4-cidr", "subnet-single-v4-cidr"},
 			[]*int{lo.ToPtr(64), lo.ToPtr(128)},
 			nil,
-			lo.ToPtr("max IP count for single CIDR IPv4 subnet 'subnet-single-v4-cidr' can't over 32; max IP count for single CIDR IPv4 subnet 'subnet-single-v4-cidr' can't over 32"),
+			lo.ToPtr("max IP count for single CIDR IPv4 subnet 'subnet-single-v4-cidr' can't over 32; " +
+				"max IP count for single CIDR IPv4 subnet 'subnet-single-v4-cidr' can't over 32"),
 		},
 		{
 			[]IpFamily{IPv4, IPv6},
@@ -819,7 +820,9 @@ func TestResolveNetworkConfig_FlexCiderValidation(t *testing.T) {
 			[]string{"subnet-single-v6-cidr", "subnet-single-v6-cidr"},
 			[]*int{lo.ToPtr(256), nil},
 			lo.ToPtr(true),
-			lo.ToPtr("total IP count of all VNICs can't be over 256; max IP count for single CIDR IPv6 subnet 'subnet-single-v6-cidr' can't over 16; max IP count for single CIDR IPv6 subnet 'subnet-single-v6-cidr' can't over 16"),
+			lo.ToPtr("total IP count of all VNICs can't be over 256; " +
+				"max IP count for single CIDR IPv6 subnet 'subnet-single-v6-cidr' can't over 16; " +
+				"max IP count for single CIDR IPv6 subnet 'subnet-single-v6-cidr' can't over 16"),
 		},
 	}
 

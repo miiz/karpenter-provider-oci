@@ -188,20 +188,21 @@ func (p *DefaultProvider) validateSecondaryVnicIpCountsAgainstCidrs(vnicConfig *
 	subnetAndNsg SubnetAndNsgs) error {
 	ipCountVal := p.ipCountToCheck(vnicConfig)
 	if subnetAndNsg.Subnet != nil {
-		//When the subnet is resolved, and it is IPv6 enabled and assigned IPv6 IP, for single CIDR block, KPO only allows <=16 IPs
+		// When the subnet is resolved, and it is IPv6 enabled and assigned IPv6 IP,
+		// for single CIDR block, KPO only allows <=16 IPs
 		if IsIPv6(p.ipFamilies) && vnicConfig.AssignIpV6Ip != nil && *vnicConfig.AssignIpV6Ip {
 			ipV6CidrBlocks := getCidrBlocks(subnetAndNsg.Subnet.Ipv6CidrBlock, subnetAndNsg.Subnet.Ipv6CidrBlocks)
 
 			if len(ipV6CidrBlocks) == 1 && ipCountVal > 16 {
-				return errors.New(fmt.Sprintf("max IP count for single CIDR IPv6 subnet '%s' can't over 16",
-					strPtrToStr(subnetAndNsg.Subnet.Id)))
+				return fmt.Errorf("max IP count for single CIDR IPv6 subnet '%s' can't over 16",
+					strPtrToStr(subnetAndNsg.Subnet.Id))
 			}
 		} else {
-			//When the subnet is resolved and IPv6, for single CIDR block, it only allows <=32 IPs
+			// When the subnet is resolved and IPv6, for single CIDR block, it only allows <=32 IPs
 			ipv4CidrBlocks := getCidrBlocks(subnetAndNsg.Subnet.CidrBlock, subnetAndNsg.Subnet.Ipv4CidrBlocks)
 			if len(ipv4CidrBlocks) == 1 && ipCountVal > 32 {
-				return errors.New(fmt.Sprintf("max IP count for single CIDR IPv4 subnet '%s' can't over 32",
-					strPtrToStr(subnetAndNsg.Subnet.Id)))
+				return fmt.Errorf("max IP count for single CIDR IPv4 subnet '%s' can't over 32",
+					strPtrToStr(subnetAndNsg.Subnet.Id))
 			}
 		}
 	}
